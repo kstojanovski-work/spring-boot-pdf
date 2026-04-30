@@ -1,0 +1,136 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #172026;
+    background: #f4f7f8;
+}
+
+main {
+    display: grid;
+    grid-template-columns: minmax(340px, 520px) minmax(420px, 1fr);
+    min-height: 100vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px;
+    background: #ffffff;
+    border-right: 1px solid #d8e0e4;
+}
+
+h1 {
+    margin: 0 0 8px;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: 1px solid #b9c6cc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font: inherit;
+    color: #172026;
+    background: #ffffff;
+}
+
+textarea {
+    min-height: 170px;
+    resize: vertical;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+button {
+    min-height: 42px;
+    border: 0;
+    border-radius: 6px;
+    padding: 0 16px;
+    font: inherit;
+    font-weight: 700;
+    color: #ffffff;
+    background: #006d77;
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.status {
+    min-height: 20px;
+    font-size: 14px;
+    color: #52636b;
+}
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #dfe7ea;
+}
+
+.preview-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #c8d3d8;
+    background: #eef3f5;
+}
+
+.preview-title {
+    font-weight: 700;
+}
+
+.download {
+    color: #005f73;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.is-hidden {
+    display: none;
+}
+
+iframe {
+    width: 100%;
+    flex: 1;
+    border: 0;
+    background: #ffffff;
+}
+
+@media (max-width: 880px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    form {
+        border-right: 0;
+        border-bottom: 1px solid #d8e0e4;
+    }
+
+    .preview {
+        min-height: 70vh;
+    }
+}

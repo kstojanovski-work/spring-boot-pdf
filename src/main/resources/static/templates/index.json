@@ -1,0 +1,23 @@
+[
+  {
+    "id": "demo",
+    "name": "Demo",
+    "fileName": "demo.pdf",
+    "htmlPath": "/templates/demo.html",
+    "cssPath": "/templates/demo.css"
+  },
+  {
+    "id": "enterprise",
+    "name": "Enterprise",
+    "fileName": "enterprise-invoice.pdf",
+    "htmlPath": "/templates/enterprise.html",
+    "cssPath": "/templates/enterprise.css"
+  },
+  {
+    "id": "brochure",
+    "name": "Prospekt",
+    "fileName": "brand-prospekt.pdf",
+    "htmlPath": "/templates/brochure.html",
+    "cssPath": "/templates/brochure.css"
+  }
+]

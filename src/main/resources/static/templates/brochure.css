@@ -1,0 +1,230 @@
+@page {
+  size: A4;
+  margin: 24mm 18mm 18mm;
+}
+
+@page :first {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  font-family: "Avenir Next", "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+  color: #111827;
+  background: #ffffff;
+}
+
+.brochure {
+  min-height: 297mm;
+  background: #ffffff;
+}
+
+.hero {
+  height: 128mm;
+  padding: 20mm 18mm;
+  color: white;
+  background-color: #101828;
+  background-image:
+    radial-gradient(circle at 15% 20%, #00a6a6 0, #00a6a6 16%, transparent 17%),
+    radial-gradient(circle at 88% 14%, #f7b801 0, #f7b801 12%, transparent 13%),
+    linear-gradient(135deg, #101828 0%, #12343b 48%, #0b1320 100%);
+}
+
+.hero-copy {
+  width: 58%;
+  float: left;
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+
+h1 {
+  margin: 18px 0 12px;
+  font-size: 36pt;
+  line-height: 1.02;
+  font-weight: 800;
+}
+
+.hero-copy p {
+  width: 88%;
+  margin: 0;
+  font-size: 13pt;
+  line-height: 1.55;
+  color: #d8eef0;
+}
+
+.hero-panel {
+  width: 34%;
+  float: right;
+  margin-top: 8mm;
+  padding: 16px;
+  color: #101828;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+}
+
+.panel-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #667085;
+}
+
+.panel-title {
+  margin: 6px 0 16px;
+  font-size: 17pt;
+  font-weight: 800;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-top: 1px solid #e4e7ec;
+}
+
+.metric-row strong {
+  color: #008f8c;
+}
+
+.bar {
+  height: 10px;
+  margin-top: 12px;
+  background: #e4e7ec;
+  border-radius: 8px;
+}
+
+.bar span {
+  display: block;
+  height: 10px;
+  border-radius: 8px;
+  background: #f7b801;
+}
+
+.bar-a {
+  width: 76%;
+}
+
+.bar-b {
+  width: 54%;
+  background: #00a6a6 !important;
+}
+
+.intro {
+  display: flex;
+  gap: 18mm;
+  padding: 18mm;
+  background: white;
+}
+
+.intro > div:first-child {
+  width: 62%;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 22pt;
+  color: #101828;
+}
+
+.intro p,
+.features p,
+.cta p {
+  margin: 0;
+  color: #475467;
+  line-height: 1.55;
+}
+
+.quote {
+  width: 32%;
+  margin-top: 24px;
+  padding: 14px;
+  border-left: 5px solid #00a6a6;
+  background: #eefaf9;
+}
+
+.quote strong,
+.quote span {
+  display: block;
+}
+
+.quote span {
+  margin-top: 8px;
+  color: #475467;
+}
+
+.features {
+  overflow: hidden;
+  background: white;
+}
+
+.features article {
+  width: 30%;
+  min-height: 36mm;
+  padding: 16px;
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  page-break-inside: avoid;
+  margin-bottom: 30px;
+}
+
+.features span {
+  color: #f7b801;
+  font-weight: 800;
+}
+
+h3 {
+  margin: 8px 0;
+  font-size: 15pt;
+}
+
+.cta {
+  page-break-before: always;
+  margin: 0;
+  padding: 0;
+  color: white;
+  page-break-inside: avoid;
+}
+
+.cta-box {
+  width: 78%;
+  margin: 0;
+  padding: 16px 18px;
+  color: white;
+  background: #006d77;
+  border-radius: 8px;
+  page-break-inside: avoid;
+}
+
+.cta-heading {
+  width: 42%;
+  float: left;
+}
+
+.cta span,
+.cta strong {
+  display: block;
+}
+
+.cta span {
+  color: #bde7e8;
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cta strong {
+  margin-top: 5px;
+  font-size: 17pt;
+}
+
+.cta p {
+  margin-left: 46%;
+  color: #effaf9;
+}

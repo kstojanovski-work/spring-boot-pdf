@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PDF Renderer</title>
+    <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<main>
+    <form id="pdfForm">
+        <h1>PDF Renderer</h1>
+
+        <label>
+            Template
+            <select id="template" name="template"></select>
+        </label>
+
+        <label>
+            Dateiname
+            <input
+                id="fileName"
+                name="fileName">
+        </label>
+
+        <label>
+            HTML
+            <textarea
+                id="html"
+                name="html"
+                required></textarea>
+        </label>
+
+        <label>
+            CSS
+            <textarea
+                id="css"
+                name="css"></textarea>
+        </label>
+
+        <button id="submitButton" type="submit">PDF erzeugen</button>
+        <div id="status" class="status"></div>
+    </form>
+
+    <section class="preview">
+        <div class="preview-bar">
+            <div class="preview-title">Vorschau</div>
+            <a
+                id="downloadLink"
+                class="download is-hidden"
+                href="#"
+                download="document.pdf">
+                PDF herunterladen
+            </a>
+        </div>
+        <iframe id="pdfPreview" title="PDF Vorschau"></iframe>
+    </section>
+</main>
+
+<script>
+    const form = document.querySelector("#pdfForm");
+    const templateSelect = document.querySelector("#template");
+    const fileNameInput = document.querySelector("#fileName");
+    const htmlInput = document.querySelector("#html");
+    const cssInput = document.querySelector("#css");
+    const submitButton = document.querySelector("#submitButton");
+    const statusElement = document.querySelector("#status");
+    const preview = document.querySelector("#pdfPreview");
+    const downloadLink = document.querySelector("#downloadLink");
+
+    let templates = {};
+
+    let currentPdfUrl;
+
+    templateSelect.addEventListener("change", () => {
+        if (!templateSelect.value) {
+            return;
+        }
+
+        applyTemplate(templateSelect.value);
+        statusElement.textContent = `Template "${templateSelect.selectedOptions[0].textContent}" wurde geladen.`;
+    });
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        submitButton.disabled = true;
+        statusElement.textContent = "PDF wird erzeugt...";
+
+        if (currentPdfUrl) {
+            URL.revokeObjectURL(currentPdfUrl);
+        }
+
+        try {
+            const response = await fetch("/api/pdf", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    html: htmlInput.value,
+                    css: cssInput.value,
+                    fileName: fileNameInput.value
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(await readError(response));
+            }
+
+            const pdfBlob = await response.blob();
+            currentPdfUrl = URL.createObjectURL(pdfBlob);
+
+            preview.src = currentPdfUrl;
+            downloadLink.href = currentPdfUrl;
+            downloadLink.download = fileNameInput.value || "document.pdf";
+            downloadLink.classList.remove("is-hidden");
+            statusElement.textContent = "PDF wurde erzeugt.";
+        } catch (error) {
+            preview.removeAttribute("src");
+            downloadLink.classList.add("is-hidden");
+            statusElement.textContent = error.message;
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+
+    async function loadTemplates() {
+        submitButton.disabled = true;
+        statusElement.textContent = "Templates werden geladen...";
+
+        try {
+            const templateIndexResponse = await fetch("/templates/index.json");
+            if (!templateIndexResponse.ok) {
+                throw new Error("Templates konnten nicht geladen werden.");
+            }
+
+            templateSelect.innerHTML = "";
+            templateSelect.append(createTemplateOption("", "Bitte wählen"));
+            templates = {};
+
+            for (const item of await templateIndexResponse.json()) {
+                templates[item.id] = await loadTemplate(item);
+                templateSelect.append(createTemplateOption(item.id, item.name));
+            }
+
+            templateSelect.value = "";
+            statusElement.textContent = "Templates wurden geladen.";
+        } catch (error) {
+            statusElement.textContent = error.message;
+        } finally {
+            submitButton.disabled = false;
+        }
+    }
+
+    function applyTemplate(templateName) {
+        const template = templates[templateName];
+
+        if (!template) {
+            return;
+        }
+
+        fileNameInput.value = template.fileName;
+        htmlInput.value = template.html;
+        cssInput.value = template.css;
+    }
+
+    async function loadTemplate(item) {
+        const [htmlResponse, cssResponse] = await Promise.all([
+            fetch(item.htmlPath),
+            fetch(item.cssPath)
+        ]);
+
+        if (!htmlResponse.ok || !cssResponse.ok) {
+            throw new Error(`Template "${item.name}" konnte nicht geladen werden.`);
+        }
+
+        return {
+            fileName: item.fileName,
+            html: await htmlResponse.text(),
+            css: await cssResponse.text()
+        };
+    }
+
+    function createTemplateOption(value, label) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = label;
+        option.disabled = value === "";
+        option.selected = value === "";
+        return option;
+    }
+
+    async function readError(response) {
+        const contentType = response.headers.get("Content-Type") || "";
+        if (contentType.includes("application/problem+json")) {
+            const problem = await response.json();
+            return problem.detail || problem.title || "PDF konnte nicht erzeugt werden.";
+        }
+
+        return "PDF konnte nicht erzeugt werden.";
+    }
+
+    loadTemplates();
+</script>
+</body>
+</html>
